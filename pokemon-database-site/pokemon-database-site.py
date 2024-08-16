@@ -36,7 +36,20 @@ def search():
         top="2vh",
     ),
 
-
+def pokemon_card():
+    return rx.box(
+        rx.vstack(
+            rx.image(
+                src="https://cloud-94weoqu9j-hack-club-bot.vercel.app/11.png",
+                height="31.5vh",
+                width="100%",
+                object_fit = "cover",
+                image_rendering="pixelated"
+            )
+        ),
+        height="52vh",
+        bg = "#0F0D13"
+    )
 def index() -> rx.Component:
     # Welcome Page (Index)
     return rx.vstack(
@@ -56,17 +69,45 @@ def index() -> rx.Component:
             ),
             position="relative",
             left="10vw",
-            top="10vh",
             width="47vw",
             height="14vh"
         ),
-        height="100vh",
+        rx.grid(
+            rx.foreach(
+                rx.Var.range(12),
+                lambda i:pokemon_card()  
+            ),
+            columns="4",
+            spacing="4",
+            width="100%",
+            
+            
+        ),
         padding_left = "10vw",
         padding_right = "10vw",
+        padding_top = "10vh",
         bg = "#141218",
-        spacing="0"
+        spacing="3"
     )
 
+style = {
+    
+    "html": {
+        "background-color": "#141218"
+    },
+    "body":{
+        "background-color":"#141218",
+    },
+    "img": { 
+        "image-rendering": "optimizeSpeed"            ,
+        "image-rendering": "-moz-crisp-edges"          ,
+        "image-rendering": "-o-crisp-edges"            ,
+        "image-rendering": "-webkit-optimize-contrast ",
+        "image-rendering": "pixelated "                ,
+        "image-rendering": "optimize-contrast"        ,
+        "-ms-interpolation-mode": "nearest-neighbor" 
 
-app = rx.App()
+    }
+}
+app = rx.App(style=style)
 app.add_page(index)
