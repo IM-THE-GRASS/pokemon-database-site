@@ -1,12 +1,16 @@
 """Welcome to Reflex! This file outlines the steps to create a basic app."""
-
+import os
 import reflex as rx
-
+import json
 from rxconfig import config
 
 
 class State(rx.State):
-    pass
+    def get_pokemon_data():
+        f = open(os.path.join("pokemon-database-site", "pokemon.json"))
+        data = json.loads(f.read())
+        return data
+    pokemon:list[dict[str, str]] = get_pokemon_data()
 
 def search():
     return rx.hstack(
@@ -101,7 +105,7 @@ def index() -> rx.Component:
         ),
         rx.grid(
             rx.foreach(
-                rx.Var.range(12),
+                State.pokemon,
                 lambda i:pokemon_card()  
             ),
             columns="4",
