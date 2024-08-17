@@ -10,15 +10,6 @@ class State(rx.State):
     def get_pokemon_data():
         f = open(os.path.join("pokemon-database-site", "pokemon.json"))
         data = json.loads(f.read())
-        for result in data:
-            result["unformatted_name"] = result["name"]
-            result["name"] = result["name"].title().replace("-", " ")
-            id = result["url"].replace("https://pokeapi.co/api/v2/pokemon/", "")
-            id = id.replace("/", "")
-            print(id)
-            img = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png"
-            result["img"] = img
-            result["id"] = id
         return data
     pokemon:list[dict[str, str]] = get_pokemon_data()
     
@@ -76,7 +67,7 @@ def pokemon_card(info, index):
                     max_height="2.1vh"
                 ),
                 rx.text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+                    info["desc"],
                     font_size="14px",
                     letter_spacing="0.25px",
                     line_height="20px",
