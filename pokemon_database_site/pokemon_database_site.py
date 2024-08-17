@@ -8,37 +8,11 @@ import pokebase
 class State(rx.State):
     
     def get_pokemon_data():
-        f = open(os.path.join("pokemon-database-site", "pokemon.json"))
+        f = open(os.path.join("pokemon_database_site", "pokemon.json"))
         data = json.loads(f.read())
         return data
     pokemon:list[dict[str, str]] = get_pokemon_data()
     
-
-def search():
-    return rx.hstack(
-        rx.link(
-            rx.icon(tag="search", color="white", size=30),
-            href="https://cow.com"
-        ),
-        rx.input(
-            placeholder="Search",
-            color="white",
-            font_size="3.5vh",
-            width="100%",
-            background_color="rgba(255, 255, 255, 0)",
-            border="none",
-            border_width="0px",
-            height="30",
-        ),
-        
-        bg="rgba(0, 0, 0, 0.29)",
-        border_radius="1087vh",
-        padding="0.5vh",
-        width="80vw",
-        position="absolute",
-        left="10vw",
-        top="2vh",
-    ),
 def pokemon_card(info, index):
     return rx.box(
         rx.vstack(
@@ -56,15 +30,6 @@ def pokemon_card(info, index):
                     line_height="30px",
                     letter_spacing="-1px",
                     font_weight="bold"
-                ),
-                rx.hstack(
-                    rx.image(
-                        src="https://cloud-94weoqu9j-hack-club-bot.vercel.app/012.png"
-                    ),
-                    rx.image(
-                        src="https://cloud-94weoqu9j-hack-club-bot.vercel.app/012.png"
-                    ),
-                    max_height="2.1vh"
                 ),
                 rx.text(
                     info["desc"],
@@ -85,7 +50,6 @@ def pokemon_card(info, index):
 def index() -> rx.Component:
     # Welcome Page (Index)
     return rx.vstack(
-        search(),
         rx.hstack(
             rx.text(
                 "Pokemon Database",
