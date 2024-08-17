@@ -3,14 +3,25 @@ import os
 import reflex as rx
 import json
 from rxconfig import config
-
+import pokebase
 
 class State(rx.State):
+    
     def get_pokemon_data():
         f = open(os.path.join("pokemon-database-site", "pokemon.json"))
         data = json.loads(f.read())
+        for result in data:
+            result["unformatted_name"] = result["name"]
+            result["name"] = result["name"].title().replace("-", " ")
+            id = result["url"].replace("https://pokeapi.co/api/v2/pokemon/", "")
+            id = id.replace("/", "")
+            print(id)
+            img = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png"
+            result["img"] = img
+            result["id"] = id
         return data
     pokemon:list[dict[str, str]] = get_pokemon_data()
+    
 
 def search():
     return rx.hstack(
@@ -37,12 +48,11 @@ def search():
         left="10vw",
         top="2vh",
     ),
-
-def pokemon_card():
+def pokemon_card(info, index):
     return rx.box(
         rx.vstack(
             rx.image(
-                src="https://cloud-94weoqu9j-hack-club-bot.vercel.app/11.png",
+                src=info["img"],
                 height="31.5vh",
                 width="100%",
                 object_fit = "cover",
@@ -50,9 +60,9 @@ def pokemon_card():
             ),
             rx.vstack(
                 rx.text(
-                    "Bulbasour",
-                    font_size="36px",
-                    line_height="24px",
+                    info["name"],
+                    font_size="30px",
+                    line_height="30px",
                     letter_spacing="-1px",
                     font_weight="bold"
                 ),
@@ -106,7 +116,7 @@ def index() -> rx.Component:
         rx.grid(
             rx.foreach(
                 State.pokemon,
-                lambda i:pokemon_card()  
+                pokemon_card  
             ),
             columns="4",
             spacing="4",
